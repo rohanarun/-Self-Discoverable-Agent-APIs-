@@ -195,18 +195,6 @@ If you use this pattern in other local apps, a good baseline is:
 - describe request schemas and examples inside the discovery document
 - keep all responses JSON unless there is a good reason not to
 
-## Publishing On GitHub
-
-This directory is already structured to be a standalone repo. If you publish it, a good repo description would be:
-
-> Example implementation of the Agent Port pattern: self-discoverable local APIs using `GET /agents` on localhost.
-
-Suggested repo names:
-
-- `agent-port-example`
-- `localhost-agents-example`
-- `get-agents-example`
-
 ## License
 
 MIT
