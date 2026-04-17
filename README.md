@@ -3,7 +3,7 @@
 This is a small, publishable example repo for a new local API pattern:
 
 - apps bind to `127.0.0.1`
-- apps prefer a memorable reserved local port range starting at `4242`
+- apps prefer a memorable reserved local port range starting at `50000`
 - apps expose `GET /agents` as the canonical discovery endpoint
 - agents scan the reserved range, request `GET /agents`, and learn how to use the app
 
@@ -35,8 +35,8 @@ That gives tools like OpenClaw a standard way to discover and use local apps.
 
 This example app:
 
-- prefers port `4242`
-- falls forward to the next free port through `4269`
+- prefers port `50000`
+- falls forward to the next free port through `50001`
 - exposes `GET /agents` as the canonical discovery endpoint
 - also supports `.well-known` aliases
 - includes a tiny discovery client that scans the port range
@@ -70,12 +70,12 @@ python3 server.py
 Expected output:
 
 ```text
-Agent Port Example listening on http://127.0.0.1:4242
-Discovery document: http://127.0.0.1:4242/agents
-Reserved agent range: 4242-4269
+Agent Port Example listening on http://127.0.0.1:50000
+Discovery document: http://127.0.0.1:50000/agents
+Reserved agent range: 50000-50069
 ```
 
-If `4242` is already taken, it will automatically pick the next available port in the reserved range.
+If `50000` is already taken, it will automatically pick the next available port in the reserved range.
 
 ## Discover The App
 
@@ -85,32 +85,32 @@ In another terminal:
 python3 discover.py
 ```
 
-That script scans `127.0.0.1:4242-4269`, requests `GET /agents`, and prints any services that match `agent-port/v1`.
+That script scans `127.0.0.1:50000-50069`, requests `GET /agents`, and prints any services that match `agent-port/v1`.
 
 ## Try The API
 
 Read the discovery document:
 
 ```bash
-curl -s http://127.0.0.1:4242/agents
+curl -s http://127.0.0.1:50000/agents
 ```
 
 Check health:
 
 ```bash
-curl -s http://127.0.0.1:4242/health
+curl -s http://127.0.0.1:50000/health
 ```
 
 Read feature notes:
 
 ```bash
-curl -s http://127.0.0.1:4242/notes
+curl -s http://127.0.0.1:50000/notes
 ```
 
 Add a task:
 
 ```bash
-curl -s http://127.0.0.1:4242/tools/add_task \
+curl -s http://127.0.0.1:50000/tools/add_task \
   -H 'Content-Type: application/json' \
   -d '{"title":"Ship the agent-port example"}'
 ```
@@ -118,7 +118,7 @@ curl -s http://127.0.0.1:4242/tools/add_task \
 Complete a task:
 
 ```bash
-curl -s http://127.0.0.1:4242/tools/complete_task \
+curl -s http://127.0.0.1:50000/tools/complete_task \
   -H 'Content-Type: application/json' \
   -d '{"id":1}'
 ```
@@ -138,13 +138,13 @@ It returns a document like:
   "protocol": "agent-port/v1",
   "service": "AgentPortExample",
   "display_name": "Agent Port Example App",
-  "base_url": "http://127.0.0.1:4242",
-  "health_url": "http://127.0.0.1:4242/health",
+  "base_url": "http://127.0.0.1:50000",
+  "health_url": "http://127.0.0.1:50000/health",
   "agent_port": {
-    "preferred_port": 4242,
-    "current_port": 4242,
-    "scan_range_start": 4242,
-    "scan_range_end": 4269
+    "preferred_port": 50000,
+    "current_port": 50000,
+    "scan_range_start": 50000,
+    "scan_range_end": 50069
   },
   "capabilities": [
     {
@@ -165,7 +165,7 @@ It returns a document like:
 
 An agent should:
 
-1. Scan the local reserved agent-port range, starting at `4242`.
+1. Scan the local reserved agent-port range, starting at `50000`.
 2. Request `GET /agents` on each responsive localhost port.
 3. Check whether `protocol == "agent-port/v1"`.
 4. Use the returned `base_url` and `capabilities` to decide what it can do.
@@ -188,7 +188,7 @@ The app is not just exposing an API. It is explaining itself to agents.
 If you use this pattern in other local apps, a good baseline is:
 
 - bind only to `127.0.0.1`
-- use a memorable reserved range starting at `4242`
+- use a memorable reserved range starting at `50000`
 - expose `GET /agents` as the canonical discovery route
 - optionally support `.well-known` aliases
 - include `protocol`, `service`, `base_url`, and `capabilities`
