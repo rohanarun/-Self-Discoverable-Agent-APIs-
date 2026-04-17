@@ -1,3 +1,11 @@
+# GET /agents
+
+Agents were supposed to make life easier, rather than increase the burden on vendors and user to install and learn skills, MCP, etc.
+
+Every integration ends up hardcoded. One app listens on a random localhost port. Another has custom docs. A third only works if the agent was explicitly taught about it in advance. Users have to learn what MCP and skills are. 
+A better pattern is to make APIs self-discoverable.
+
+
 # Agent Port Example
 
 This is a small, publishable example repo for a new local API pattern:
